@@ -44,7 +44,7 @@ module Dropbox
         Dropbox::API::Object.convert(results, self)
       end
 
-      def delta(cursor=nil)
+      def delta(cursor=nil, convert=false)
         entries  = []
         has_more = true
         params   = cursor ? {:cursor => cursor} : {}
@@ -59,7 +59,11 @@ module Dropbox
           entry.last || {:is_deleted => true, :path => entry.first}
         end
 
-        Delta.new(params[:cursor], Dropbox::API::Object.convert(files, self))
+        if convert
+          Delta.new(params[:cursor], Dropbox::API::Object.convert(files, self))
+        else
+          {cursor: params[:cursor], entries: files}
+        end
       end
 
     end
