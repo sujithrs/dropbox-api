@@ -44,6 +44,11 @@ module Dropbox
         Dropbox::API::Object.convert(results, self)
       end
 
+      def share_url(path, options={})
+        response = raw.shares({ :path => path }.merge(options))
+        Dropbox::API::Object.init(response, self)
+      end
+
       def delta(cursor=nil, convert=false)
         entries  = []
         has_more = true
