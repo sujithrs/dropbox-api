@@ -56,7 +56,7 @@ module Dropbox
         end
 
         files = entries.map do |entry|
-          entry.last || {:is_deleted => true, :path => entry.first}
+          entry.last && entry.last.symbolize_keys || {:is_deleted => true, :path => entry.first}
         end
 
         if convert
